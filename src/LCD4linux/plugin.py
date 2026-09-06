@@ -449,16 +449,16 @@ LCD4linux.WebIfInitDelay = ConfigYesNo(default=False)
 LCD4linux.WebIfAllow = ConfigText(default="127. 192.168. 172. 10.", fixed_size=False)
 LCD4linux.WebIfDeny = ConfigText(default="", fixed_size=False)
 LCD4linux.WebIfDesign = ConfigSelection(choices=[("1", _("1 - normal")), ("2", _("2 - side by side"))], default="2")
-LCD4linux.WetterApi = ConfigSelection(choices=[("MSN", _("MSN")), ("OPENMETEO", _("Open-Meteo")), ("OPENWEATHER", _("OpenWeatherMap")), ("WEATHERUNLOCKED", _("WeatherUnlocked"))], default="MSN")
+LCD4linux.WetterApi = ConfigSelection(choices=[("MSN", _("MSN")), ("OPENMETEO", _("Open-Meteo")), ("OPENWEATHER", _("OpenWeatherMap"))], default="MSN")
 LCD4linux.WetterApiKeyOpenWeatherMap = ConfigText(default="", fixed_size=False, visible_width=50)
-LCD4linux.WetterApiKeyWeatherUnlocked = ConfigText(default="", fixed_size=False, visible_width=50)
+LCD4linux.WetterApiKeyWeatherUnlocked = ConfigText(default="", fixed_size=False, visible_width=50)  # TODO: deprecated, to be removed at next opportunity
 LCD4linux.WetterCity = ConfigText(default="Berlin", fixed_size=False)
 LCD4linux.WetterCoords = ConfigText(default="0,0", fixed_size=False)
 LCD4linux.Wetter2City = ConfigText(default="Berlin", fixed_size=False)
 LCD4linux.Wetter2Coords = ConfigText(default="0,0", fixed_size=False)
 LCD4linux.WetterPath = ConfigText(default="", fixed_size=False, visible_width=50)
-LCD4linux.WetterLowColor = ConfigSelection(choices=Farbe, default="aquamarine")
 LCD4linux.WetterHighColor = ConfigSelection(choices=Farbe, default="violet")
+LCD4linux.WetterLowColor = ConfigSelection(choices=Farbe, default="aquamarine")
 LCD4linux.WetterTransparenz = ConfigSelection(choices=[("false", _("no")), ("crop", _("alternative Copy-Mode/DM800hd (24bit)")), ("true", _("yes"))], default="false")
 LCD4linux.WetterIconZoom = ConfigSelectionNumber(20, 70, 1, default=40)
 LCD4linux.WetterRain = ConfigSelection(choices=[("false", _("no")), ("true", _("yes")), ("true2", _("yes + %"))], default="true")
@@ -2444,7 +2444,7 @@ def L4log(nfo, wert=""):
 			try:
 				with open("/tmp/L4log.txt", "a") as f:
 					f.write("%s %s %s\r\n" % (strftime("%H:%M:%S"), nfo, wert))
-			except IOError:
+			except OSError:
 				print("[LCD4linux] %s Logging-Error" % strftime("%H:%M:%S"))
 
 
@@ -5783,13 +5783,12 @@ class LCDdisplayConfig(ConfigListScreen, Screen):
 			self.list1.append(getConfigListEntry(_("Background-Picture Type"), LCD4linux.BilderBackground))
 			self.list1.append(getConfigListEntry(_("Weather API"), LCD4linux.WetterApi))
 			self.list1.append(getConfigListEntry(_("Weather API-Key OpenWeatherMap"), LCD4linux.WetterApiKeyOpenWeatherMap))
-			self.list1.append(getConfigListEntry(_("Weather API-ID Key WeatherUnlocked"), LCD4linux.WetterApiKeyWeatherUnlocked))
 			self.list1.append(getConfigListEntry(_("Weather City"), LCD4linux.WetterCity))
 			self.list1.append(getConfigListEntry(_("Weather City 2"), LCD4linux.Wetter2City))
 			self.list1.append(getConfigListEntry(_("Weather-Icon-Path [ok]>"), LCD4linux.WetterPath))
 			self.list1.append(getConfigListEntry(_("Weather-Icon Zoom"), LCD4linux.WetterIconZoom))
-			self.list1.append(getConfigListEntry(_("Weather Low Temperature Color"), LCD4linux.WetterLowColor))
 			self.list1.append(getConfigListEntry(_("Weather High Temperature Color"), LCD4linux.WetterHighColor))
+			self.list1.append(getConfigListEntry(_("Weather Low Temperature Color"), LCD4linux.WetterLowColor))
 			self.list1.append(getConfigListEntry(_("Weather Transparency"), LCD4linux.WetterTransparenz))
 			self.list1.append(getConfigListEntry(_("Weather Wind speed unit"), LCD4linux.WetterWind))
 			self.list1.append(getConfigListEntry(_("Weather Wind Info Lines"), LCD4linux.WetterWindLines))
@@ -8154,7 +8153,7 @@ class LCDdisplayConfig(ConfigListScreen, Screen):
 			LCD4linux.Wetter2Coords.save()
 			L4log("Weather2 city was changed from '%s' to '%s'" % (self.SaveWetter2, LCD4linux.Wetter2City.value))
 			resetWetter()
-		if LCD4linux.WetterIconZoom.isChanged() or LCD4linux.WetterRain.isChanged() or LCD4linux.WetterRainZoom.isChanged() or LCD4linux.WetterRainColor.isChanged() or LCD4linux.WetterRainColor2.isChanged() or LCD4linux.WetterRainColor2use.isChanged() or LCD4linux.WetterLine.isChanged() or LCD4linux.WetterTrendArrows.isChanged() or LCD4linux.WetterExtra.isChanged() or LCD4linux.WetterExtraColorFeel.isChanged() or LCD4linux.WetterExtraColorCity.isChanged() or LCD4linux.WetterExtraZoom.isChanged() or LCD4linux.WetterExtraFeel.isChanged() or LCD4linux.WetterWind.isChanged() or LCD4linux.WetterWindLines.isChanged() or LCD4linux.WetterLowColor.isChanged() or LCD4linux.WetterHighColor.isChanged() or LCD4linux.WetterTransparenz.isChanged() or LCD4linux.WetterHumColor.isChanged() or LCD4linux.WetterExtra.isChanged():
+		if LCD4linux.WetterIconZoom.isChanged() or LCD4linux.WetterRain.isChanged() or LCD4linux.WetterRainZoom.isChanged() or LCD4linux.WetterRainColor.isChanged() or LCD4linux.WetterRainColor2.isChanged() or LCD4linux.WetterRainColor2use.isChanged() or LCD4linux.WetterLine.isChanged() or LCD4linux.WetterTrendArrows.isChanged() or LCD4linux.WetterExtra.isChanged() or LCD4linux.WetterExtraColorFeel.isChanged() or LCD4linux.WetterExtraColorCity.isChanged() or LCD4linux.WetterExtraZoom.isChanged() or LCD4linux.WetterExtraFeel.isChanged() or LCD4linux.WetterWind.isChanged() or LCD4linux.WetterWindLines.isChanged() or LCD4linux.WetterHighColor.isChanged() or LCD4linux.WetterLowColor.isChanged() or LCD4linux.WetterTransparenz.isChanged() or LCD4linux.WetterHumColor.isChanged() or LCD4linux.WetterExtra.isChanged():
 			PICwetter = [None, None]
 		if LCD4linux.WetterZoom.isChanged() or LCD4linux.StandbyWetterZoom.isChanged() or LCD4linux.MPWetterZoom.isChanged() or LCD4linux.WetterType.isChanged() or LCD4linux.StandbyWetterType.isChanged() or LCD4linux.MPWetterType.isChanged() or LCD4linux.WetterColor.isChanged() or LCD4linux.StandbyWetterColor.isChanged() or LCD4linux.MPWetterColor.isChanged() or LCD4linux.WetterFont.isChanged() or LCD4linux.MPWetterFont.isChanged() or LCD4linux.StandbyWetterFont.isChanged() or LCD4linux.WetterShadow.isChanged() or LCD4linux.StandbyWetterShadow.isChanged() or LCD4linux.MPWetterShadow.isChanged():
 			PICwetter[0] = None
@@ -8841,7 +8840,7 @@ class UpdateStatus(Screen):
 								self.oM[len(self.oM) - 1].append([oT, str(Mod.measure.humidity), oC, oCA, oName, Mod.module_type, Battery])
 					L4log("iT", "%s" % self.iT)
 					L4log("oM", "%s" % self.oM)
-					if netatmo.getUint(NetatmoUnit.TEMPERATURE) != "":
+					if NetatmoUnit and netatmo.getUint(NetatmoUnit.TEMPERATURE) != "":
 						self.TEMPERATURE = netatmo.getUint(NetatmoUnit.TEMPERATURE)
 						self.HUMIDITY = netatmo.getUint(NetatmoUnit.HUMIDITY)
 						self.CO2 = netatmo.getUint(NetatmoUnit.CO2)
@@ -8860,7 +8859,7 @@ class UpdateStatus(Screen):
 	def BPPlayerEvent(self, func, value):
 		if func == 3:
 			self.restartTimer()
-			if cjukeboxevent.TotalTime == cjukeboxevent.PlayTime and cjukeboxevent.Percent == 100:
+			if cjukeboxevent and cjukeboxevent.TotalTime == cjukeboxevent.PlayTime and cjukeboxevent.Percent == 100:
 				L4logE("GP3", "reset Timer")
 				self.GPLlength[1] = 5 * 60 * 90000
 				self.GPLposition[1] = 0
@@ -9004,7 +9003,7 @@ class UpdateStatus(Screen):
 				if getFB2(False):
 					setFB2("1")
 			OSDtimer += 1
-		if SonosOK:
+		if SonosOK is True:
 			if self.SonosCheckTimer >= int(LCD4linux.SonosCheckTimer.value):
 				self.SonosCheckTimer = 0
 				self.getSonos()
@@ -9138,7 +9137,7 @@ class UpdateStatus(Screen):
 	def _getProcVal(self, pathname, base=10):
 		val = None
 		try:
-			with open(pathname, 'r') as f:
+			with open(pathname) as f:
 				val = int(f.read(), base)
 			if val >= 2 ** 31:
 				val -= 2 ** 32
@@ -9266,7 +9265,7 @@ class UpdateStatus(Screen):
 						if self.ref != self.LsreftoString:
 							self.startBitrateData()
 					self.LgetName = info.getName()
-					if self.LsreftoString.startswith("1:") and not self.Lpath:
+					if self.LsreftoString and self.LsreftoString.startswith("1:") and not self.Lpath:
 						self.Lprovider = info.getInfoString(iServiceInformation.sProvider)
 						self.LtransponderData = info.getInfoObject(iServiceInformation.sTransponderData)
 					elif self.Lpath and self.Lpath.startswith("http"):
@@ -9321,7 +9320,7 @@ class UpdateStatus(Screen):
 							L4logE("Audio %d" % idx, self.Laudiodescription)
 			self.LEventsDesc = None
 			_LsreftoString = None
-			if self.LsreftoString.startswith(("4097:0", "5001:0", "5002:0", "5003")):
+			if self.LsreftoString and self.LsreftoString.startswith(("4097:0", "5001:0", "5002:0", "5003")):
 				_LsreftoString = self.LsreftoString.replace("4097:0", "1:0", 1).replace("5001:0", "1:0", 1).replace("5002:0", "1:0", 1).replace("5003:0", "1:0", 1)
 				epgcache = eEPGCache.getInstance()
 				if epgcache is not None:
@@ -9854,27 +9853,6 @@ class UpdateStatus(Screen):
 					feedurl = "https://api.openweathermap.org/data/2.5/forecast"
 					L4logE("OWM-getforecastweather%s: %s" % (wetter, feedurl))
 					callInThread(boundFunction(getPage, feedurl, params=params), boundFunction(self.downloadOWMcallback, wetter), self.downloadListError)
-
-			elif LCD4linux.WetterApi.value == "WEATHERUNLOCKED" and len(LCD4linux.WetterApiKeyWeatherUnlocked.value.split()) == 2:
-				params = [
-					("app_id", LCD4linux.WetterApiKeyWeatherUnlocked.value.split()[0]),
-					("app_key", LCD4linux.WetterApiKeyWeatherUnlocked.value.split()[1] if len(LCD4linux.WetterApiKeyWeatherUnlocked.value.split()) == 2 else ""),
-					("lang", la[:2])
-				]
-				city = LCD4linux.WetterCity.value if wetter == 0 else LCD4linux.Wetter2City.value
-				if "." in city:  # e.g. 'de.ZIPccode'
-					feedurl = "http://api.weatherunlocked.com/api/current/%s" % city
-				else:
-					feedurl = "http://api.weatherunlocked.com/api/current/%s,%s" % (self.Long[wetter], self.Lat[wetter])
-				L4logE("WU-getcurrentweather%s: %s" % (wetter, feedurl))
-				callInThread(boundFunction(getPage, feedurl, params=params), boundFunction(self.downloadWUcallback, wetter), self.downloadListError)
-				if "." in ort:  # e.g. 'de.ZIPcode'
-					feedurl = "http://api.weatherunlocked.com/api/forecast/%s" % city
-				else:
-					feedurl = "http://api.weatherunlocked.com/api/forecast/%s,%s" % (self.Long[wetter], self.Lat[wetter])
-				L4logE("WU-getforecastweather%s: %s" % (wetter, feedurl))
-				callInThread(boundFunction(getPage, feedurl, params=params), boundFunction(self.downloadWUcallback, wetter), self.downloadListError)
-			L4log("Wetter%s: downloadstart %s:%s %s %s" % (wetter, LCD4linux.WetterApi.value, ort, language.getLanguage(), la))
 		else:
 			if self.NetworkConnectionAvailable is not None:
 				L4log("Wetter%s: check Network..." % wetter)
@@ -11173,7 +11151,7 @@ def LCD4linuxPIC(self, session):
 						L4logE("Icon:", Icon)
 						if isfile(join(UseWetterPath, Icon)):
 							pil_image = Image.open(join(UseWetterPath, Icon))
-							xx, yy = pil_image.size
+							xx, yy = pil_image.sizeConfigType
 							y = int(float(int(LCD4linux.WetterIconZoom.value) * Wmulti) / xx * yy)
 							if LCD4linux.BilderQuality.value == "0":
 								pil_image = pil_image.resize((int(int(LCD4linux.WetterIconZoom.value) * Wmulti), y))
@@ -11214,13 +11192,13 @@ def LCD4linuxPIC(self, session):
 							w, Dayh = getFsize(Day, fontD)
 							PX = POSX + int((27 * Wmulti) - w / 2)
 							ShadowText(Wim, PX, POSY, Day, fontD, ConfigColor, ConfigShadow)
+							w, h = getFsize(High, font)
+							PX = POSX + int(27 * Wmulti) + int(Leer / 2)
+							ShadowText(Wim, PX, POSY + PY + int(60 * Wmulti), High, font, LCD4linux.WetterHighColor.value, ConfigShadow)
 							w, h = getFsize(Low, font)
-							PX = POSX + int((27 * Wmulti)) - w - int(Leer / 2)
+							PX = POSX + int(27 * Wmulti) - w - int(Leer / 2)
 							PY = int(h / 10) if (len(High) > 2 or len(Low) > 3) else 0
 							ShadowText(Wim, PX, POSY + PY + int(60 * Wmulti), Low, font, LCD4linux.WetterLowColor.value, ConfigShadow)
-							w, h = getFsize(High, font)
-							PX = POSX + int((27 * Wmulti)) + int(Leer / 2)
-							ShadowText(Wim, PX, POSY + PY + int(60 * Wmulti), High, font, LCD4linux.WetterHighColor.value, ConfigShadow)
 							if LCD4linux.WetterRain.value != "false":
 								font = ImageFont.truetype(ConfigFont, int(int(LCD4linux.WetterRainZoom.value) * Wmulti / 10.0), encoding='unic')
 								w, h = getFsize(Regen, font)
@@ -11907,10 +11885,8 @@ def LCD4linuxPIC(self, session):
 						y = ConfigSizeH
 						x = int(float(y) / yy * xx)
 					pil_image = pil_image.resize((x, y), Image.Resampling.LANCZOS if PY3 else Image.ANTIALIAS)
-					if ConfigTransp is True:
-						self.CoverIm = pil_image.convert("RGBA")
-					else:
-						self.CoverIm = pil_image.convert("RGB", dither=Image.NONE, palette=Image.ADAPTIVE)
+					mode = "RGBA" if ConfigTransp is True else "RGB"
+					self.CoverIm = pil_image.convert(mode)
 					del pil_image
 					self.CoverName[1] = ""
 					L4log("change Cover", ShowPicture)
@@ -12084,7 +12060,7 @@ def LCD4linuxPIC(self, session):
 						pix = pil_image.load()
 						if pix is not None:
 							pcheck = (0, 0, 0) if pix[0, 0] == (0, 0, 0) else (255, 255, 255)
-							L4logE("Grabpixel", pix[0, 0])
+							L4logE("Grabpixel", str(pix[0, 0]))
 							x2 = int(xx / 2)
 							y2 = int(yy / 2)
 							ll, o = 0, 0
@@ -12808,7 +12784,7 @@ def LCD4linuxPIC(self, session):
 					try:
 						imW = Image.open(join(LCD4data, "gradient.png"))
 						imW = imW.resize((ProgressBar, ConfigSize))
-						imW = imW.transpose(Image.FLIP_LEFT_RIGHT)
+						imW = imW.transpose(Image.Transpose.FLIP_LEFT_RIGHT) if PY3 else imW.transpose(Image.FLIP_LEFT_RIGHT)
 						imW = imW.crop((0, 0, int(ProgressBar * staerke / 100), ConfigSize))
 						self.im[im].paste(imW, (POSX + 10, ConfigPos))
 					except Exception:
@@ -13421,7 +13397,7 @@ def LCD4linuxPIC(self, session):
 		POSX = getSplit(ConfigSplit, ConfigAlign, MAX_W, MAX_W)
 		if isfile("/tmp/ecm.info"):
 			info = {}
-			for line in open("/tmp/ecm.info", 'r').readlines():
+			for line in open("/tmp/ecm.info").readlines():
 				d = line.split(':', 1)
 				if len(d) > 1:
 					info[d[0].strip()] = d[1].strip()

@@ -59,7 +59,7 @@ def ParseCode():
 	L1, L2, L3, L4 = [], [], [], []
 	i1, i2, i3, i4 = 0, 0, 0, 0
 	L4log("WebIF: parsing Code....")
-	for line in open(Py, "r").readlines():
+	for line in open(Py).readlines():
 		if line.find("self.list1.append") >= 0 or line.find("self.list2.append") >= 0 or line.find("self.list3.append") >= 0 or line.find("self.list4.append") >= 0:
 			Z = line.replace("getConfigListEntry(_", ",").replace(")", "").replace("(", "").replace(".append", "").replace("\t", "").replace("\n", "").replace("\r", "").replace("\"", "").split(",")
 			if Z[0] == "self.list1":
@@ -228,7 +228,7 @@ class LCD4linuxConfigweb(resource.Resource):
 			req.setHeader('Content-Disposition', 'attachment;filename=lcd4config')
 			req.setHeader('Content-Length', str(stat(lcd4config).st_size))
 			req.setHeader('charset', 'UTF-8')
-			with open(lcd4config, "r") as f:
+			with open(lcd4config) as f:
 				html = f.read()
 			return ensure_binary(html)
 		if req.args.get(b"upload.y", None) is not None:
@@ -257,7 +257,7 @@ class LCD4linuxConfigweb(resource.Resource):
 				req.setHeader('Content-Disposition', 'attachment;filename=l4log.txt')
 				req.setHeader('Content-Length', str(stat(lcd4config).st_size))
 				req.setHeader('charset', 'UTF-8')
-				with open(lcd4config, "r") as f:
+				with open(lcd4config) as f:
 					html = f.read()
 				return ensure_binary(html)
 		if command is None:
@@ -485,7 +485,7 @@ class LCD4linuxConfigweb(resource.Resource):
 			html += "<script language=\"JavaScript\">\n"
 			html += "function fensterchen() {\n"
 			html += "fens1=window.open(\"\", \"Crashlog\",\"width=500,height=300,resizable=yes\");\n"
-			for line in open(CrashFile, "r").readlines():
+			for line in open(CrashFile).readlines():
 				html += "fens1.document.write('%s');\n" % line.replace("\n", "<br>").replace("'", "\\'")
 			html += "} </script>\n"
 		html += "<style type=\"text/css\">\n"
@@ -721,7 +721,7 @@ class LCD4linuxConfigweb(resource.Resource):
 			html += "Brightness org/set %s/%s<br />\n" % (str(L4LElement.getBrightness()), str(L4LElement.getBrightness(0, False)))
 
 		html += "<hr><span style=\"font-size:8pt\">%s (%s)</span>" % (getINFO(), IP)
-		html += "<BR><a style=\"font-size:10pt; color:#FFCC00;\" href=\"http://www.i-have-a-dreambox.com/wbb2/thread.php?postid=1634882\">Support & FAQ & Info & Donation</a>"
+		html += "<BR><a style=\"font-size:10pt; color:#FFCC00;\" href=\"https://www.opena.tv/viewtopic.php?t=73\">Support & FAQ & Info & Donation</a>"
 		if len(L4LElement.get()) > 0:
 			html += "<script language=\"JavaScript\">\n"
 			html += "function Efensterchen() {\n"
