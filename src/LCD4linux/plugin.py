@@ -11265,7 +11265,7 @@ def LCD4linuxPIC(self, session):
 							Feelarrow = "▲" if OldFeel < float(Feel) else "▼"
 						OldFeel = float(cleanFeel)
 						Feel = "%s%s" % (Feelarrow, Feel)
-					Feel += "°C"
+					Feel += "°"
 				if trendarrows:
 					if OldTemp_c == -88:
 						Temparrow = "●"
@@ -11273,10 +11273,10 @@ def LCD4linuxPIC(self, session):
 						Temparrow = "▲" if OldTemp_c < float(Temp_c) else "▼"
 					OldTemp_c = float(cleanTemp_c)
 					Temp_c = "%s%s" % (Temparrow, Temp_c)
-				Temp_c += "°C"
+				Temp_c += "°"
 				if ConfigType.startswith("4"):
 					if ConfigType == "4":
-						Temp_c += "°C"
+						Temp_c += "C"
 					TextSize = int(25 * Wmulti)
 					font = ImageFont.truetype(ConfigFont, TextSize, encoding='unic')
 					w, h = getFsize(Temp_c, font)
